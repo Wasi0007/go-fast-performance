@@ -14,14 +14,15 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "source_id", referencedColumnName = "id")
     private Station source;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "destination_id", referencedColumnName = "id")
     private Station destination;
 
     @Column(nullable = false)
     private Double cost;
+
 }

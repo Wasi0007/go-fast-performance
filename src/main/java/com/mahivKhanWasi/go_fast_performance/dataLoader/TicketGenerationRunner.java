@@ -29,16 +29,16 @@ public class TicketGenerationRunner {
             if (skipTicketGeneration) {
                 return;
             }
-//            GenerateTicketType1(restTemplate);
+            GenerateTicket(restTemplate);
 
         };
     }
 
-    private void GenerateTicketType1(RestTemplate restTemplate){
+    private void GenerateTicket(RestTemplate restTemplate){
         String url = "http://localhost:8080/api/tickets/generate";
 
         LocalDate startDate = LocalDate.of(2025, 4, 25);
-        LocalDate endDate = LocalDate.of(2026, 5, 02);
+        LocalDate endDate = startDate.plusDays(2);
 
         for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
             Map<String, String> requestBody = new HashMap<>();

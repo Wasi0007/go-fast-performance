@@ -26,7 +26,7 @@ public class Ticket extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
 
