@@ -15,11 +15,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        jdbc:
+          batch_size: 50           # ⭐ Batch 50 statements at a time
+        order_inserts: true         # ⭐ Optimize insert ordering
+        order_updates: true         # ⭐ Optimize update ordering
+        generate_statistics: true   # (Optional) Collect Hibernate stats
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
 #  batch:
 #    jdbc:
 #      initialize-schema: always
 #    job:
 #      enabled: false
+
 server:
   port: 8080

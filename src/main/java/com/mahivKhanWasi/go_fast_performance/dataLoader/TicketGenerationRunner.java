@@ -24,15 +24,31 @@ public class TicketGenerationRunner {
     public CommandLineRunner run(RestTemplate restTemplate) {
         return args -> {
 
-            boolean skipTicketGeneration = true;
+            int skipTicketGeneration = 2;
 
-            if (skipTicketGeneration) {
+            if(skipTicketGeneration == 1){
+                GenerateTicket(restTemplate);
+            }else if(skipTicketGeneration == 2){
+                MigrateTicket(restTemplate);
+            }else{
                 return;
             }
-            GenerateTicket(restTemplate);
 
         };
     }
+
+    private void MigrateTicket(RestTemplate restTemplate) {
+        String url = "http://localhost:8080/api/tickets/migrate";
+
+        try {
+            String response = restTemplate.getForObject(url, String.class);
+            System.out.println("Migration Response: " + response);
+        } catch (Exception e) {
+            System.err.println("Failed to migrate tickets: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     private void GenerateTicket(RestTemplate restTemplate){
         String url = "http://localhost:8080/api/tickets/generate";

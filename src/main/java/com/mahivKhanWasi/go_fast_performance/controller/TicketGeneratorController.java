@@ -8,6 +8,7 @@ import com.mahivKhanWasi.go_fast_performance.model.Trip;
 import com.mahivKhanWasi.go_fast_performance.repository.Ticket1Repository;
 import com.mahivKhanWasi.go_fast_performance.repository.TicketRepository;
 import com.mahivKhanWasi.go_fast_performance.repository.TripRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class TicketGeneratorController {
     private final Ticket1Repository ticket1Repository;
     private final JdbcTemplate jdbcTemplate; // For using direct SQL inserts
     private final Random random = new Random();
+    private final EntityManager entityManager;
 
     @PostMapping("/generate")
     @Transactional
@@ -82,10 +84,10 @@ public class TicketGeneratorController {
     @GetMapping("/migrate")
     @Transactional
     public String migrateTickets() {
-        long startTime = System.nanoTime(); // Start measuring total time
+        long startTime = System.nanoTime();
 
         LocalDate startDate = LocalDate.of(2025, 4, 25);
-        LocalDate endDate = startDate.plusDays(2);
+        LocalDate endDate = LocalDate.of(2026, 5, 2);
 
         for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 
@@ -94,16 +96,17 @@ public class TicketGeneratorController {
 
             List<Ticket> ticketList = ticketRepository.findAllByCreatedAtBetween(startOfDay, endOfDay);
 
-
             if (ticketList.isEmpty()) {
-                break;
+                continue;
             }
 
-            // Pass chunk index and total time to the insert function
-            insertTicketsBatch(ticketList, startTime, date); // chunkIndex starts from 1
+            insertTicketsBatch(ticketList, startTime, date);
+
+            entityManager.clear(); // 🧹 CLEAR persistence context after processing 1 day
+            System.gc(); // optional: manually hint garbage collector
         }
 
-        return "Successfully generated";
+        return "Successfully migrated";
     }
 
 
