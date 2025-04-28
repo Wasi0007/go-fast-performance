@@ -24,7 +24,7 @@ public class TicketGenerationRunner {
     public CommandLineRunner run(RestTemplate restTemplate) {
         return args -> {
 
-            int skipTicketGeneration = 2;
+            int skipTicketGeneration = 3;
 
             if(skipTicketGeneration == 1){
                 GenerateTicket(restTemplate);
@@ -53,6 +53,8 @@ public class TicketGenerationRunner {
     private void GenerateTicket(RestTemplate restTemplate){
         String url = "http://localhost:8080/api/tickets/generate";
 
+//        LocalDate startDate = LocalDate.of(2025, 4, 25);
+//        LocalDate endDate = LocalDate.of(2026, 5, 2);
         LocalDate startDate = LocalDate.of(2025, 4, 25);
         LocalDate endDate = startDate.plusDays(2);
 

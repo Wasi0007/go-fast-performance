@@ -87,7 +87,7 @@ public class TicketGeneratorController {
         long startTime = System.nanoTime();
 
         LocalDate startDate = LocalDate.of(2025, 4, 25);
-        LocalDate endDate = LocalDate.of(2026, 5, 2);
+        LocalDate endDate = startDate.plusDays(2);
 
         for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 
